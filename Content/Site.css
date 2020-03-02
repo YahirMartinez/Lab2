@@ -26,3 +26,14 @@
 {
     display: none;
 }
+/*Espacio para las cajas*/
+fieldset label
+{
+    display: block;
+}
+
+fieldset input
+{
+    display: block;
+    margin-bottom : 5px;
+}
