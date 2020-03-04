@@ -29,7 +29,7 @@ namespace MVCLaboratorio.Controllers
         [HttpPost]
         public ActionResult Create(int idVideo,string titulo, int repro, string url)
         {
-            //Guardo el video
+            //Guardo el video en SQL
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(new SqlParameter("@idVideo", idVideo));
             parametros.Add(new SqlParameter("@titulo", titulo));
@@ -37,8 +37,6 @@ namespace MVCLaboratorio.Controllers
             parametros.Add(new SqlParameter("@url", url));
 
             BaseHelper.ejecutarSentencia("sp_video_insertar", CommandType.StoredProcedure, parametros);
-
-
             return RedirectToAction("Index","Video");
         }
 
@@ -50,7 +48,12 @@ namespace MVCLaboratorio.Controllers
         [HttpPost]
         public ActionResult Delete(int idVideo)
         {
-            return View();
+            //Eliminar video en SQL
+            List<SqlParameter> parametros = new List<SqlParameter>();
+            parametros.Add(new SqlParameter("@idVideo", idVideo));
+
+            BaseHelper.ejecutarSentencia("sp_video_eliminar", CommandType.StoredProcedure, parametros);
+            return RedirectToAction("Index", "Video");
         }
 
         public ActionResult Edit()
@@ -60,6 +63,24 @@ namespace MVCLaboratorio.Controllers
 
         [HttpPost]
         public ActionResult Edit(int idVideo, string titulo, int repro, string url)
+        {
+            //Modificar en SQL
+            List<SqlParameter> parametros = new List<SqlParameter>();
+            parametros.Add(new SqlParameter("@idVideo", idVideo));
+            parametros.Add(new SqlParameter("@titulo", titulo));
+            parametros.Add(new SqlParameter("@repro", repro));
+            parametros.Add(new SqlParameter("@url", url));
+
+            BaseHelper.ejecutarSentencia("sp_video_modificar", CommandType.StoredProcedure, parametros);
+            return RedirectToAction("Index", "Video");
+        }
+        public ActionResult Select()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Select(int idVideo, string titulo, int repro, string url)
         {
             return View();
         }
