@@ -15,75 +15,80 @@ namespace MVCLaboratorio.Controllers
     {
         //
         // GET: /Video/
-
         public ActionResult Index()
         {
             return View();
         }
-
         public ActionResult Create()
         {
             return View();
         }
-
         [HttpPost]
-        public ActionResult Create(int idVideo,string titulo, int repro, string url)
+        public ActionResult Create(int idvideo,
+                                    string titulo,
+                                    int reproducciones,
+                                    string url)
         {
-            //Guardo el video en SQL
+            //guarda el video
             List<SqlParameter> parametros = new List<SqlParameter>();
-            parametros.Add(new SqlParameter("@idVideo", idVideo));
+            parametros.Add(new SqlParameter("@idvideo", idvideo));
             parametros.Add(new SqlParameter("@titulo", titulo));
-            parametros.Add(new SqlParameter("@repro", repro));
+            parametros.Add(new SqlParameter("@reproducciones", reproducciones));
             parametros.Add(new SqlParameter("@url", url));
 
             BaseHelper.ejecutarSentencia("sp_video_insertar", CommandType.StoredProcedure, parametros);
-            return RedirectToAction("Index","Video");
-        }
 
+
+            return RedirectToAction("Index", "Video");
+        }
         public ActionResult Delete()
         {
             return View();
         }
-
         [HttpPost]
-        public ActionResult Delete(int idVideo)
+        public ActionResult Delete(int idvideo)
         {
-            //Eliminar video en SQL
             List<SqlParameter> parametros = new List<SqlParameter>();
-            parametros.Add(new SqlParameter("@idVideo", idVideo));
+            parametros.Add(new SqlParameter("@idvideo", idvideo));
+
 
             BaseHelper.ejecutarSentencia("sp_video_eliminar", CommandType.StoredProcedure, parametros);
-            return RedirectToAction("Index", "Video");
-        }
 
+
+            return RedirectToAction("Index", "Video");
+
+        }
         public ActionResult Edit()
         {
             return View();
         }
-
         [HttpPost]
-        public ActionResult Edit(int idVideo, string titulo, int repro, string url)
+        public ActionResult Edit(int idvideo,
+                                    string titulo,
+                                    int reproducciones,
+                                    string url)
         {
-            //Modificar en SQL
             List<SqlParameter> parametros = new List<SqlParameter>();
-            parametros.Add(new SqlParameter("@idVideo", idVideo));
+            parametros.Add(new SqlParameter("@idvideo", idvideo));
             parametros.Add(new SqlParameter("@titulo", titulo));
-            parametros.Add(new SqlParameter("@repro", repro));
+            parametros.Add(new SqlParameter("@reproducciones", reproducciones));
             parametros.Add(new SqlParameter("@url", url));
 
-            BaseHelper.ejecutarSentencia("sp_video_modificar", CommandType.StoredProcedure, parametros);
+            BaseHelper.ejecutarSentencia("sp_Video_Update", CommandType.StoredProcedure, parametros);
+
+
             return RedirectToAction("Index", "Video");
+
         }
-        public ActionResult Select()
+        public ActionResult Mostrar()
         {
+            ViewData["video"] = BaseHelper.ejecutarSentencia("sp_Video_mostrar", CommandType.StoredProcedure);
+
             return View();
+
         }
 
-        [HttpPost]
-        public ActionResult Select(int idVideo, string titulo, int repro, string url)
-        {
-            return View();
-        }
 
     }
 }
+
